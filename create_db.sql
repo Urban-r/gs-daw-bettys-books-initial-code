@@ -6,6 +6,16 @@ USE bettys_books;
 
 # Create the tables
 CREATE TABLE IF NOT EXISTS books (id INT AUTO_INCREMENT,name VARCHAR(50),price DECIMAL(5, 2) unsigned,PRIMARY KEY(id));
+#create pasword tables
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT,
+    firstname VARCHAR(50),
+    lastname VARCHAR(50),
+    username VARCHAR(50),
+    email VARCHAR(50),
+    hashedpassword VARCHAR(255),
+    PRIMARY KEY(id)
+);
 
 # Create the app user
 CREATE USER IF NOT EXISTS 'bettys_books_app'@'localhost' IDENTIFIED BY 'qwertyuiop'; 
