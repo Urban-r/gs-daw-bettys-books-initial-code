@@ -17,19 +17,21 @@ router.post('/registered', function (req, res, next) {
     bcrypt.hash(plainPassword, saltRounds, function(err, hashedPassword) {
         // Store hashed password in your database.
         let newrecord = [
-            req.body.firstname,
-            req.body.lastname,
+            req.body.first,
+            req.body.last,
             req.body.username,
             req.body.email,
             hashedPassword
         ]
-        db.query(sqlquery, newrecord, err, result => {
+        db.query(sqlquery, newrecord, (err, result) => {
             if (err) {
-                next(err)
-            }
-            else      
-            res.send(' Hello '+ req.body.first + ' '+ req.body.last +' you are now registered!  We will send an email to you at ' + req.body.email)                                                                       
-        })    
+                next(err);
+            } else {     
+                result = 'Hello '+ req.body.first + ' '+ req.body.last +' you are now registered!  We will send an email to you at ' + req.body.email
+                result += 'Your password is: '+ req.body.password +' and your hashed password is: '+ hashedPassword
+                res.send(result)
+                            }
+        });   
     })
 })
 
