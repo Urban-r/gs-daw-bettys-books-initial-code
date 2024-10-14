@@ -34,6 +34,30 @@ router.post('/registered', function (req, res, next) {
         });   
     })
 })
+router.get('/login', function (req, res, next) {
+    res.render('login.ejs')                                                               
+})
+router.post('/loggedin', function (req, res, next) {
+    // saving data in database
+    let sqlquery = "SELECT * FROM users WHERE username = ?"
+    db.query(sqlquery, req.body.username, (err, result) => {
+        if (err) {
+            next(err);
+        } else {
+            if (result.length > 0) {
+                bcrypt.compare(req.body.password, result[0].hashedpassword, function(err, result) {
+                    if (result) {
+                        res.send('Welcome '+ req.body.username + ' you are now logged in!')
+                    } else {
+                        res.send('Invalid password')
+                    }
+                })
+            } else {
+                res.send('Invalid username')
+            }
+        }
+    })
+})
 router.get('/list', function(req, res, next) {
     let sqlquery = "SELECT * FROM users" // query database to get all the books
     // execute sql query
